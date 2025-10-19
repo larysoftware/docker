@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.4-apache
 
 ARG VHOST_CONF_PATH
 
@@ -17,8 +17,19 @@ RUN apt-get update \
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
 install-php-extensions gd xdebug
+
+# Instalacja Node.js (LTS) + npm
+RUN curl -fsSL https://nodejs.org/dist/v22.11.0/node-v22.11.0-linux-x64.tar.xz -o /tmp/node.tar.xz \
+    && tar -xf /tmp/node.tar.xz -C /usr/local --strip-components=1 \
+    && rm /tmp/node.tar.xz \
+    && npm install -g npm@11.5.2
+
+# Instalacja Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 RUN mkdir -p /var/www/backend
+RUN mkdir -p /var/www/front
 RUN docker-php-ext-enable xdebug
 
-WORKDIR /var/www/backend/
+WORKDIR /var/www/front/
 
