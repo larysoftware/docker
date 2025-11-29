@@ -16,7 +16,7 @@ RUN apt-get update \
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
-install-php-extensions gd xdebug
+install-php-extensions gd xdebug soap
 
 # Instalacja Node.js (LTS) + npm
 RUN curl -fsSL https://nodejs.org/dist/v22.11.0/node-v22.11.0-linux-arm64.tar.xz -o /tmp/node.tar.xz \
